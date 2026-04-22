@@ -37,11 +37,31 @@ mvn spring-boot:run
 
 The Spring Boot API runs at `http://localhost:8080`.
 
+## Database
+
+The backend connects to MySQL using Spring Data JPA. By default it expects:
+
+- Database URL: `jdbc:mysql://localhost:3306/plastitrack?createDatabaseIfNotExist=true`
+- Username: `root`
+- Password: empty
+
+For local development, create or run MySQL, then set these environment variables if your credentials are different:
+
+```powershell
+$env:DB_URL="jdbc:mysql://localhost:3306/plastitrack?createDatabaseIfNotExist=true"
+$env:DB_USERNAME="root"
+$env:DB_PASSWORD="your_mysql_password"
+mvn spring-boot:run
+```
+
+For cloud deployment, use the same variables with a managed MySQL database such as AWS RDS, Railway MySQL, Render MySQL-compatible storage, or any hosted MySQL service.
+
 ## API Endpoints
 
 - `GET /api/stats`
 - `GET /api/modules`
 - `POST /api/pickups`
+- `GET /api/pickups`
 - `GET /api/impact`
 - `GET /api/community-events`
 

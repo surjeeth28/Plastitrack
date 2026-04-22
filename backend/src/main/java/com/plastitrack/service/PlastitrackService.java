@@ -1,19 +1,23 @@
 package com.plastitrack.service;
 
+import com.plastitrack.entity.PickupRequestEntity;
 import com.plastitrack.model.CommunityEvent;
 import com.plastitrack.model.DashboardStat;
 import com.plastitrack.model.ImpactMetric;
 import com.plastitrack.model.ModuleInfo;
 import com.plastitrack.model.PickupRequest;
 import com.plastitrack.model.PickupResponse;
+import com.plastitrack.repository.PickupRequestRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @Service
 public class PlastitrackService {
+    private final PickupRequestRepository pickupRequestRepository;
+
     private final Map<String, Integer> rewardRates = Map.of(
             "PET bottles", 12,
             "HDPE containers", 14,
@@ -21,12 +25,26 @@ public class PlastitrackService {
             "Packaging film", 7
     );
 
+    public PlastitrackService(PickupRequestRepository pickupRequestRepository) {
+        this.pickupRequestRepository = pickupRequestRepository;
+    }
+
     public List<DashboardStat> getDashboardStats() {
+        List<PickupRequestEntity> pickups = pickupRequestRepository.findAll();
+        long totalRequests = pickups.size();
+        double totalWeight = pickups.stream()
+                .mapToDouble(PickupRequestEntity::getWeightKg)
+                .sum();
+        int totalPoints = pickups.stream()
+                .mapToInt(PickupRequestEntity::getEstimatedRewardPoints)
+                .sum();
+        double co2Avoided = totalWeight * 2.5;
+
         return List.of(
-                new DashboardStat("Plastic collected", "12,840 kg"),
-                new DashboardStat("Reward points issued", "48,210"),
-                new DashboardStat("CO2e avoided", "31.6 t"),
-                new DashboardStat("Collection success", "86%")
+                new DashboardStat("Plastic collected", String.format("%.1f kg", totalWeight)),
+                new DashboardStat("Reward points issued", String.valueOf(totalPoints)),
+                new DashboardStat("CO2e avoided", String.format("%.1f kg", co2Avoided)),
+                new DashboardStat("Pickup requests", String.valueOf(totalRequests))
         );
     }
 
@@ -44,8 +62,22 @@ public class PlastitrackService {
     public PickupResponse createPickup(PickupRequest request) {
         int rate = rewardRates.getOrDefault(request.plasticType(), 8);
         int points = (int) Math.round(request.weightKg() * rate);
-        String message = "Pickup created for " + request.weightKg() + " kg of " + request.plasticType() + " in " + request.area() + ".";
-        return new PickupResponse(UUID.randomUUID().toString(), "REQUESTED", points, message);
+
+        PickupRequestEntity pickup = new PickupRequestEntity();
+        pickup.setArea(request.area());
+        pickup.setWeightKg(request.weightKg());
+        pickup.setPlasticType(request.plasticType());
+        pickup.setEstimatedRewardPoints(points);
+        pickup.setStatus("REQUESTED");
+        pickup.setCreatedAt(LocalDateTime.now());
+
+        PickupRequestEntity savedPickup = pickupRequestRepository.save(pickup);
+        String message = "Pickup #" + savedPickup.getId() + " created for " + request.weightKg() + " kg of " + request.plasticType() + " in " + request.area() + ".";
+        return new PickupResponse(String.valueOf(savedPickup.getId()), savedPickup.getStatus(), points, message);
+    }
+
+    public List<PickupRequestEntity> getRecentPickups() {
+        return pickupRequestRepository.findTop10ByOrderByCreatedAtDesc();
     }
 
     public List<ImpactMetric> getImpactMetrics() {

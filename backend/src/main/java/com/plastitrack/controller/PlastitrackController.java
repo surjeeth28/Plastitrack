@@ -1,5 +1,6 @@
 package com.plastitrack.controller;
 
+import com.plastitrack.entity.PickupRequestEntity;
 import com.plastitrack.model.CommunityEvent;
 import com.plastitrack.model.DashboardStat;
 import com.plastitrack.model.ImpactMetric;
@@ -40,6 +41,11 @@ public class PlastitrackController {
     @PostMapping("/pickups")
     public PickupResponse createPickup(@Valid @RequestBody PickupRequest request) {
         return service.createPickup(request);
+    }
+
+    @GetMapping("/pickups")
+    public List<PickupRequestEntity> pickups() {
+        return service.getRecentPickups();
     }
 
     @GetMapping("/impact")
