@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PLASTITRACK | Plastic Waste Collection and Redemption</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#home" aria-label="PLASTITRACK home">
+        <span class="brand-mark">PT</span>
+        <span>PLASTITRACK</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#modules">Modules</a>
+        <a href="#impact">Impact</a>
+        <a href="#community">Community</a>
+      </nav>
+      <button class="icon-button" id="themeToggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+        <span class="icon moon" aria-hidden="true"></span>
+      </button>
+    </header>
+
+    <main id="home">
+      <section class="hero" aria-labelledby="hero-title">
+        <img src="assets/plastitrack-hero.png" alt="Community plastic collection and redemption station" />
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <p class="eyebrow">Community-driven waste recovery</p>
+          <h1 id="hero-title">PLASTITRACK</h1>
+          <p>
+            A plastic waste collection and redemption platform that connects residents, collectors,
+            administrators, rewards, environmental tracking, and local community action.
+          </p>
+          <div class="hero-actions">
+            <a class="primary-action" href="#pickup">Schedule Pickup</a>
+            <a class="secondary-action" href="#modules">View Modules</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="dashboard" aria-label="Live platform snapshot">
+        <article>
+          <span class="metric-value">12,840 kg</span>
+          <span class="metric-label">Plastic collected</span>
+        </article>
+        <article>
+          <span class="metric-value">48,210</span>
+          <span class="metric-label">Reward points issued</span>
+        </article>
+        <article>
+          <span class="metric-value">31.6 t</span>
+          <span class="metric-label">CO2e avoided</span>
+        </article>
+        <article>
+          <span class="metric-value">86%</span>
+          <span class="metric-label">Collection success</span>
+        </article>
+      </section>
+
+      <section class="workspace">
+        <aside class="module-rail" id="modules" aria-label="System modules">
+          <h2>Modules</h2>
+          <button class="module-tab active" type="button" data-module="user">
+            <span class="icon user" aria-hidden="true"></span>
+            User Module
+          </button>
+          <button class="module-tab" type="button" data-module="collector">
+            <span class="icon truck" aria-hidden="true"></span>
+            Collector Module
+          </button>
+          <button class="module-tab" type="button" data-module="admin">
+            <span class="icon shield" aria-hidden="true"></span>
+            Administrator Module
+          </button>
+          <button class="module-tab" type="button" data-module="reward">
+            <span class="icon gift" aria-hidden="true"></span>
+            Reward Management
+          </button>
+          <button class="module-tab" type="button" data-module="impact">
+            <span class="icon leaf" aria-hidden="true"></span>
+            Environmental Impact
+          </button>
+          <button class="module-tab" type="button" data-module="community">
+            <span class="icon people" aria-hidden="true"></span>
+            Community Module
+          </button>
+        </aside>
+
+        <section class="module-panel" aria-live="polite">
+          <div>
+            <p class="eyebrow" id="moduleKicker">Resident portal</p>
+            <h2 id="moduleTitle">User Module</h2>
+            <p id="moduleDescription">
+              Users register, request pickups, upload plastic details, track rewards, and view
+              verified collection history.
+            </p>
+          </div>
+          <div class="module-grid" id="moduleCards"></div>
+        </section>
+      </section>
+
+      <section class="operations">
+        <form class="pickup-form" id="pickup" aria-label="Schedule a plastic pickup">
+          <div>
+            <p class="eyebrow">Collection request</p>
+            <h2>Schedule a Pickup</h2>
+          </div>
+          <label>
+            Area
+            <input id="areaInput" name="area" type="text" value="Green Street Ward 4" required />
+          </label>
+          <label>
+            Plastic weight in kg
+            <input id="weightInput" name="weight" type="number" min="1" value="6" required />
+          </label>
+          <label>
+            Plastic type
+            <select id="typeInput" name="type">
+              <option>PET bottles</option>
+              <option>HDPE containers</option>
+              <option>Mixed household plastic</option>
+              <option>Packaging film</option>
+            </select>
+          </label>
+          <button class="primary-action" type="submit">Create Request</button>
+        </form>
+
+        <section class="request-preview" aria-label="Request preview">
+          <p class="eyebrow">Estimated redemption</p>
+          <h2 id="rewardPoints">72 points</h2>
+          <p id="requestSummary">
+            Pickup for 6 kg of PET bottles in Green Street Ward 4. A nearby collector can accept
+            and verify the load.
+          </p>
+          <div class="status-track" aria-label="Collection status">
+            <span class="done">Requested</span>
+            <span>Assigned</span>
+            <span>Verified</span>
+            <span>Redeemed</span>
+          </div>
+        </section>
+      </section>
+
+      <section class="impact-band" id="impact">
+        <div>
+          <p class="eyebrow">Environmental Impact Module</p>
+          <h2>Measure every kilogram beyond collection.</h2>
+          <p>
+            PLASTITRACK estimates avoided landfill load, material recovery, CO2e savings, and
+            neighborhood participation to keep environmental reporting transparent.
+          </p>
+        </div>
+        <div class="impact-bars" aria-label="Impact progress">
+          <label><span>Landfill diversion</span><meter min="0" max="100" value="78"></meter></label>
+          <label><span>Verified recycling</span><meter min="0" max="100" value="64"></meter></label>
+          <label><span>Community participation</span><meter min="0" max="100" value="83"></meter></label>
+        </div>
+      </section>
+
+      <section class="community" id="community">
+        <div>
+          <p class="eyebrow">Community Module</p>
+          <h2>Neighborhood actions</h2>
+        </div>
+        <article>
+          <strong>Saturday Clean Drive</strong>
+          <span>24 volunteers registered, 190 kg target</span>
+        </article>
+        <article>
+          <strong>School Bottle Bank</strong>
+          <span>Reward pool sponsored for student teams</span>
+        </article>
+        <article>
+          <strong>Market Zone Sorting Camp</strong>
+          <span>Collector training and on-site verification</span>
+        </article>
+      </section>
+    </main>
+
+    <footer>
+      <span>PLASTITRACK</span>
+      <span>Plastic collection, verified impact, real rewards.</span>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
